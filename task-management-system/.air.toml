@@ -3,8 +3,8 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  bin = "./tmp/main"
-  cmd = "go build -o ./tmp/main ./cmd/main.go"
+  bin = "./tmp/main.exe"
+  cmd = "go build -o ./tmp/main.exe ./cmd/main.go"
   delay = 1000
   exclude_dir = ["node_modules", "tmp", "vendor"]
   include_ext = ["go", "toml", "html"]

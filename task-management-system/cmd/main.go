@@ -21,7 +21,7 @@ func main() {
 	log.Println("Database connected successfully")
 
 	
-	err = db.AutoMigrate(&models.User{}, &models.Project{})
+	err = db.AutoMigrate(&models.User{}, &models.Project{}, &models.Task{})
 	if err != nil {
 		log.Fatal("failed to migrate database: ", err)
 	}
