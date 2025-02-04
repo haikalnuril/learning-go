@@ -9,7 +9,7 @@ type TaskRepository interface {
 	Create(task *models.Task) error
 	GetAllTasks() ([]models.Task, error)
 	GetTaskById(id uint) (*models.Task, error)
-	UpdateTask(task *models.Task) error
+	UpdateTask(id uint, task *models.Task) error
 	DeleteTask(id uint) error
 }
 
@@ -37,8 +37,8 @@ func (r *taskRepository) GetTaskById(id uint) (*models.Task, error) {
 	return &task, err
 }
 
-func (r *taskRepository) UpdateTask(task *models.Task) error {
-	return r.db.Save(task).Error
+func (r *taskRepository) UpdateTask(id uint, task *models.Task) error {
+	return r.db.Model(&models.Task{}).Where("id = ?", id).Updates(task).Error
 }
 
 func (r *taskRepository) DeleteTask(id uint) error {

@@ -5,38 +5,38 @@ import (
 	"taskman/internal/repositories"
 )
 
-type ProjectService interface {
-	CreateProject(project *models.Project) error
-	GetAllProjects() ([]models.Project, error)
-	GetProjectById(id uint) (*models.Project, error)
-	UpdateProject(project *models.Project) error
-	DeleteProject(id uint) error
+type TasktService interface {
+	CreateTask(Task *models.Task) error
+	GetAllTasks() ([]models.Task, error)
+	GetTaskById(id uint) (*models.Task, error)
+	UpdateTask(id uint, task *models.Task) error
+	DeleteTask(id uint) error
 }
 
-type projectService struct {
-	repo repositories.ProjectRepository
+type taskService struct {
+	repo repositories.TaskRepository
 }
 
-func NewProjectService(repo repositories.ProjectRepository) ProjectService {
-	return &projectService{repo: repo}
+func NewTaskService(repo repositories.TaskRepository) TaskService {
+	return &taskService{repo: repo}
 }
 
-func (s *projectService) CreateProject(project *models.Project) error {
-	return s.repo.Create(project)
+func (s *taskService) CreateTask(task *models.Task) error {
+	return s.repo.Create(task)
 }
 
-func (s *projectService) GetAllProjects() ([]models.Project, error) {
-	return s.repo.GetAllProjects()
+func (s *taskService) GetAllTasks() ([]models.Task, error) {
+	return s.repo.GetAllTasks()
 }
 
-func (s *projectService) GetProjectById(id uint) (*models.Project, error) {
-	return s.repo.GetProjectById(id)
+func (s *taskService) GetTaskById(id uint) (*models.Task, error) {
+	return s.repo.GetTaskById(id)
 }
 
-func (s *projectService) UpdateProject(project *models.Project) error {
-	return s.repo.UpdateProject(project)
+func (s *taskService) UpdateTask(task *models.Task) error {
+	return s.repo.UpdateTask(id, task)
 }
 
-func (s *projectService) DeleteProject(id uint) error {
+func (s *taskService) DeleteTask(id uint) error {
 	return s.repo.DeleteProject(id)
 }
