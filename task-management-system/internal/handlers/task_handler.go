@@ -80,7 +80,7 @@ func (h *TaskHandler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	task.Id = id
+	task.ID = id
 
 	if err := h.service.UpdateTask(id, &task); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
