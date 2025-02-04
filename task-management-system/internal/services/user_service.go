@@ -9,7 +9,7 @@ type UserService interface {
 	CreateUser(user *models.User) error
 	GetAllUsers() ([]models.User, error)
 	GetUserById(id uint) (*models.User, error)
-	UpdateUser(user *models.User) error
+	UpdateUser(id uint, user *models.User) error
 	DeleteUser(id uint) error
 }
 
@@ -34,7 +34,7 @@ func (s *userService) GetUserById(id uint) (user *models.User) error {
 }
 
 func (s *userService) UpdateUser(user *models.User) error {
-	return s.repo.UpdateUser(user)
+	return s.repo.UpdateUser(id, user)
 }
 
 func (s *userService) DeleteUser(id uint) error {

@@ -9,7 +9,7 @@ type UserRepository interface {
 	Create(user *models.User) error
 	GetAllUsers() ([]models.User, error)
 	GetUserById(id uint) (*models.User, error)
-	UpdateUser(user *models.User) error
+	UpdateUser(id uint, user *models.User) error
 	DeleteUser(id uint) error
 }
 
@@ -37,8 +37,8 @@ func (r *userRepository) GetUserById(id uint) (*models.User, error) {
 	return &user, err
 }
 
-func (r *userRepository) UpdateUser(user *models.User) error {
-	return r.db.Save(user).Error
+func (r *userRepository) UpdateUser(id uint, user *models.User) error {
+    return r.db.Model(&models.User{}).Where("id = ?", id).Updates(user).Error
 }
 
 func (r *userRepository) DeleteUser(id uint) error {
