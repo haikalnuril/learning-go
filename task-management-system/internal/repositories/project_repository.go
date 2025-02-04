@@ -9,7 +9,7 @@ type projectRepository interface {
 	Create(project *models.Project) error
 	GetAllProjects() ([]models.Project, error)
 	GetProjectById(id uint) (*models.Project, error)
-	UpdateProject(project *models.Project) error
+	UpdateProject(id uint, project *models.Project) error
 	DeleteProject(id uint) error
 }
 
@@ -37,8 +37,8 @@ func (r *projectRepository) GetProjectById(id uint) (*models.Project, error) {
 	return &project, err
 }
 
-func (r *projectRepository) UpdateProject(project *models.Project) error {
-	return r.db.Save(project).Error
+func (r *projectRepository) UpdateProject(id uint, project *models.Project) error {
+	return  r.db.Model(&models.Project{}).Where("id = ?", id).Updates(project).Error
 }
 
 func (r *projectRepository) DeleteProject(id uint) error {

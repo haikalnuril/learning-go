@@ -9,7 +9,7 @@ type ProjectService interface {
 	CreateProject(project *models.Project) error
 	GetAllProjects() ([]models.Project, error)
 	GetProjectById(id uint) (*models.Project, error)
-	UpdateProject(project *models.Project) error
+	UpdateProject(id uint, project *models.Project) error
 	DeleteProject(id uint) error
 }
 
@@ -33,8 +33,8 @@ func (s *projectService) GetProjectById(id uint) (*models.Project, error) {
 	return s.repo.GetProjectById(id)
 }
 
-func (s *projectService) UpdateProject(project *models.Project) error {
-	return s.repo.UpdateProject(project)
+func (s *projectService) UpdateProject(id uint, project *models.Project) error {
+	return s.repo.UpdateProject(id, project)
 }
 
 func (s *projectService) DeleteProject(id uint) error {
