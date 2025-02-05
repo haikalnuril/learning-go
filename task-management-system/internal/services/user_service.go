@@ -29,11 +29,11 @@ func (s *userService) GetAllUsers() ([]models.User, error) {
 	return s.repo.GetAllUsers()
 }
 
-func (s *userService) GetUserById(id uint) (user *models.User) error {
+func (s *userService) GetUserById(id uint) (*models.User, error) {
 	return s.repo.GetUserById(id)
 }
 
-func (s *userService) UpdateUser(user *models.User) error {
+func (s *userService) UpdateUser(id uint, user *models.User) error {
 	return s.repo.UpdateUser(id, user)
 }
 

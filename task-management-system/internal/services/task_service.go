@@ -5,7 +5,7 @@ import (
 	"taskman/internal/repositories"
 )
 
-type TasktService interface {
+type TaskService interface {
 	CreateTask(Task *models.Task) error
 	GetAllTasks() ([]models.Task, error)
 	GetTaskById(id uint) (*models.Task, error)
@@ -33,10 +33,10 @@ func (s *taskService) GetTaskById(id uint) (*models.Task, error) {
 	return s.repo.GetTaskById(id)
 }
 
-func (s *taskService) UpdateTask(task *models.Task) error {
+func (s *taskService) UpdateTask(id uint, task *models.Task) error {
 	return s.repo.UpdateTask(id, task)
 }
 
 func (s *taskService) DeleteTask(id uint) error {
-	return s.repo.DeleteProject(id)
+	return s.repo.DeleteTask(id)
 }

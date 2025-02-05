@@ -1,11 +1,11 @@
-package respositories
+package repositories
 
 import (
 	"taskman/internal/models"
 	"gorm.io/gorm"
 )
 
-type projectRepository interface {
+type ProjectRepository interface {
 	Create(project *models.Project) error
 	GetAllProjects() ([]models.Project, error)
 	GetProjectById(id uint) (*models.Project, error)
@@ -17,7 +17,7 @@ type projectRepository struct {
 	db *gorm.DB
 }
 
-func NewProjectRepository(db *gorm.DB) projectRepository {
+func NewProjectRepository(db *gorm.DB) ProjectRepository {
 	return &projectRepository{db: db}
 }
 

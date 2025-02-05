@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"taskman/internal/models"
 	"taskman/internal/services"
 	"github.com/gin-gonic/gin"
@@ -21,21 +22,23 @@ func (h *ProjectHandler) CreateProject(c *gin.Context) {
 	if err := c.ShouldBindJSON(&project); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status": "Failed",
-			"error": "invalid request. Name, Description, and Status are required",
+			"error":  "invalid request. Name, Description, and Status are required",
 		})
+		return
 	}
 
 	if err := h.service.CreateProject(&project); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": "Failed",
-			"error": "Internal Server Error. Can't Create Project",
+			"error":  "Internal Server Error. Can't Create Project",
 		})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"status": "Success",
+		"status":  "Success",
 		"message": "Project Created Successfully",
-		"data": project,
+		"data":    project,
 	})
 }
 
@@ -44,72 +47,103 @@ func (h *ProjectHandler) GetAllProjects(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": "Failed",
-			"error": "Internal Server Error. Can't Get Projects",
+			"error":  "Internal Server Error. Can't Get Projects",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": "Success",
+		"status":  "Success",
 		"message": "Projects Found Successfully",
-		"data": projects,
+		"data":    projects,
 	})
 }
 
 func (h *ProjectHandler) GetProjectById(c *gin.Context) {
 	id := c.Param("id")
-	project, err := h.service.GetProjectById(id)
+	projectID, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "Failed",
+			"error":  "Invalid Project ID",
+		})
+		return
+	}
+
+	project, err := h.service.GetProjectById(uint(projectID))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"status": "Failed",
-			"error": "Project Not Found",
+			"error":  "Project Not Found",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": "Success",
+		"status":  "Success",
 		"message": "Project Found Successfully",
-		"data": project,
+		"data":    project,
 	})
 }
 
 func (h *ProjectHandler) UpdateProject(c *gin.Context) {
 	id := c.Param("id")
-	var project models.Project
+	projectID, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "Failed",
+			"error":  "Invalid Project ID",
+		})
+		return
+	}
 
+	var project models.Project
 	if err := c.ShouldBindJSON(&project); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status": "Failed",
-			"error": "invalid request. Name, Description, and Status are required",
+			"error":  "invalid request. Name, Description, and Status are required",
 		})
+		return
 	}
 
-	project.ID = id
+	project.ID = uint(projectID)
 
-	if err := h.service.UpdateProject(id, &project); err != nil {
+	if err := h.service.UpdateProject(uint(projectID), &project); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": "Failed",
-			"error": "Internal Server Error. Can't Update Project",
+			"error":  "Internal Server Error. Can't Update Project",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": "Success",
+		"status":  "Success",
 		"message": "Project Updated Successfully",
-		"data": project,
+		"data":    project,
 	})
 }
 
 func (h *ProjectHandler) DeleteProject(c *gin.Context) {
 	id := c.Param("id")
-	if err := h.service.DeleteProject(id); err != nil {
+	projectID, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "Failed",
+			"error":  "Invalid Project ID",
+		})
+		return
+	}
+
+	if err := h.service.DeleteProject(uint(projectID)); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": "Failed",
-			"error": "Internal Server Error. Can't Delete Project",
+			"error":  "Internal Server Error. Can't Delete Project",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": "Success",
+		"status":  "Success",
 		"message": "Project Deleted Successfully",
 	})
 }
