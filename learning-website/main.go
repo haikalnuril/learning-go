@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gin-socmed/config"
+	"gin-socmed/model"
 	"gin-socmed/router"
 
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,8 @@ import (
 func main() {
 	config.LoadConfig()
 	config.LoadDB()
+
+	config.DB.AutoMigrate(&model.User{}, &model.Post{})
 
 	r := gin.Default()
 	api := r.Group("/api/v1")
@@ -21,6 +24,7 @@ func main() {
 	})
 
 	router.AuthRouter(api)
+	router.PostRouter(api)
 
 	r.Run(fmt.Sprintf(":%v", config.ENV.PORT))
 }
